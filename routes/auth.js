@@ -1,4 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+require('./../dbConfig');
+const User = require('../models/user');
+
 const nodemailer = require('nodemailer');
 const {OAuth2Client} = require('google-auth-library');
 require('dotenv').config()
@@ -34,8 +39,15 @@ router.post('/login',async(req,res)=>{
     const payload = ticket.getPayload();
     const userid = payload['sub'];
     console.log(payload);
+    let newUser = {
+        "userid":payload['sub'],
+        "email":payload['email'],
+        "name":payload['name']
+    }
     }
     verify().then(async()=>{
+        let user_doc = new User(newUser);
+        await user_doc.save();
         res.cookie('session-token',token)
         res.send('success');
     }).catch(console.error);
