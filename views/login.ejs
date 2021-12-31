@@ -11,8 +11,11 @@
 <body>
     <h1>Login</h1>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <a href="#" onclick="signOut();">Sign out</a>
-    
+
+    <br>
+    <a href="/auth/forgotpassword">Forgot Password</a>
+    <br>
+    <button onclick="signOut()" >Signout</button>
     <script>
         function onSignIn(googleUser) {
             
@@ -22,8 +25,9 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function() {
             if(xhr.responseText == 'success'){
+              console.log("loged in");
                 signOut()
-                location.assign('/dashboard')
+                location.assign('/auth/dashboard')
             }
             };
             xhr.send(JSON.stringify({id_token}));
@@ -34,6 +38,9 @@
           auth2.signOut().then(function () {
             console.log('User signed out.');
           });
+        }
+        function forgotPassword(){
+
         }
       </script>
 </body>
